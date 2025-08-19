@@ -91,29 +91,11 @@ model_activity_nb <- glmmTMB(frequency ~ Week + (1 | street_id), family = nbinom
 model_activity_h1_nb1 <- glmmTMB(frequency ~ Week + (1 | street_id), family = nbinom1, data=frequency)
 
 #Compare the 3 models
-AIC(model_activity_h1_poisson, model_activity_h1_nb2, model_activity_h1_nb1)
+AIC(model_activity_h1_poisson, model_activity_nb, model_activity_h1_nb1)
 
 #Overdispersion test wit DHarma
 overdispersionactivity <- simulateResiduals(model_activity_nb)
 testDispersion(overdispersionactivity)
-
-
-
-
-
-
-#pairwise comparison 
-library(multcomp)
-
-# Tukey post-hoc comparisons for Week
-week_comparisons <- glht(model_activity_nb, linfct = mcp(Week = "Tukey"))
-
-# Summary with adjusted p-values
-summary(week_comparisons)
-
-# Optional: compact letter display to see which weeks differ
-library(multcompView)
-cld(week_comparisons)
 
 
 
@@ -403,4 +385,5 @@ summary(model_restricted)
 
 confint(model_full)
 confint(model_restricted)
+
 
